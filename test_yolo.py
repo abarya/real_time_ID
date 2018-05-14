@@ -7,6 +7,7 @@ import os
 import random
 import cv2
 import numpy as np
+import time
 from keras import backend as K
 from keras.models import load_model
 from PIL import Image, ImageDraw, ImageFont
