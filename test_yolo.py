@@ -11,7 +11,7 @@ from keras import backend as K
 from keras.models import load_model
 from PIL import Image, ImageDraw, ImageFont
 
-from yad2k.models.keras_yolo import yolo_eval, yolo_head
+from yolo.models.keras_yolo import yolo_eval, yolo_head
 
 parser = argparse.ArgumentParser(
     description='Run a YOLO_v2 style detection model on test images..')
