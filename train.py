@@ -2,7 +2,7 @@ import squeezenet
 from keras.preprocessing import image
 from keras.applications.imagenet_utils import preprocess_input, decode_predictions
 
-model =  SqueezeNet()
+model =  squeezenet.SqueezeNet()
 
 img = image.load_img('data/abhishek/0000.png', target_size=(227, 227))
 x = image.img_to_array(img)
