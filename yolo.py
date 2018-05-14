@@ -88,7 +88,7 @@ def _main(args):
     print('Parsing Darknet config.')
     unique_config_file = unique_config_sections(config_path)
     cfg_parser = configparser.ConfigParser()
-    cfg_parser.read_file(unique_config_file,encoding='utf-8-sig')
+    cfg_parser.read_file(unique_config_file)
 
     print('Creating Keras model.')
     if args.fully_convolutional:
