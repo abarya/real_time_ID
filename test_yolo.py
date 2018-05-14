@@ -21,7 +21,7 @@ parser.add_argument(
     'of a YOLO_v2 model')
 parser.add_argument(
     'video_dir_path',
-    help='path to directory of input videos, defaults to data'
+    help='path to directory of input videos, defaults to data',
     default='data')
 parser.add_argument(
     '-a',
