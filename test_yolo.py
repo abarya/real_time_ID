@@ -205,10 +205,10 @@ def _main(args):
                     fill=colors[c])
                 draw.text(text_origin, label, fill=(0, 0, 0), font=font)
                 del draw
-            bboxesArray = np.array(bBoxesList)
-            np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
-            # image.save("/images/result"+str(count)+".jpg", quality=90)
-            print("video {} processed and bounding boxes saved in {}".format(fileName,bBoxesFile))
+        bboxesArray = np.array(bBoxesList)
+        np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
+        # image.save("/images/result"+str(count)+".jpg", quality=90)
+        print("video {} processed and bounding boxes saved in {}".format(fileName,bBoxesFile))
     sess.close()
 
 
