@@ -20,7 +20,7 @@ parser.add_argument(
     help='path to h5 model file containing body'
     'of a YOLO_v2 model')
 parser.add_argument(
-    'video_dir_path',
+    '--video_dir_path',
     help='path to directory of input videos, defaults to data',
     default='data')
 parser.add_argument(
