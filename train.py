@@ -1,6 +1,9 @@
 import numpy as np
+
 from keras.preprocessing import image
 from keras.applications.imagenet_utils import preprocess_input, decode_predictions
+from keras.models import Model
+
 import squeezenet
 
 model =  squeezenet.SqueezeNet()
