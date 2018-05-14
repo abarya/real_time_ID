@@ -210,7 +210,8 @@ def _main(args):
 
                 if count%30==0:
                     end = time.time()
-                    print("fps is {}".format((end-start)/30.))
+                    print("fps is {}".format(30./(end-start)))
+                    start = end
 
         bboxesArray = np.array(bBoxesList)
         np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
