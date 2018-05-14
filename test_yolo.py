@@ -126,6 +126,7 @@ def _main(args):
         cap = cv2.VideoCapture(video_dir_path+'/'+fileName)
         bBoxesFile = os.path.join(output_path,os.path.splitext(fileName)[0]+'.'+'out')
         bBoxesList = []
+        start = time.time()
         while(1):
             count+=1
             ret, frame = cap.read()
@@ -187,7 +188,7 @@ def _main(args):
                 bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
                 right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
                 print(label, (left, top), (right, bottom),c)
-                if c==0:
+                if c==0 and score>0.55:
                     print("person detected")
                     bBoxesList.append(np.array([count-1,left,top,right,bottom]))
                 if top - label_size[1] >= 0:
@@ -205,6 +206,11 @@ def _main(args):
                     fill=colors[c])
                 draw.text(text_origin, label, fill=(0, 0, 0), font=font)
                 del draw
+
+                if count%30==0:
+                    end = time.time()
+                    print("fps is {}".format((end-start)/30.)
+
         bboxesArray = np.array(bBoxesList)
         np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
         # image.save("/images/result"+str(count)+".jpg", quality=90)
