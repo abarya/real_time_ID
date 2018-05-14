@@ -20,6 +20,10 @@ parser.add_argument(
     help='path to h5 model file containing body'
     'of a YOLO_v2 model')
 parser.add_argument(
+    'video_dir_path',
+    help='path to directory of input videos, defaults to data'
+    default='data')
+parser.add_argument(
     '-a',
     '--anchors_path',
     help='path to anchors file, defaults to yolo_anchors.txt',
@@ -37,8 +41,8 @@ parser.add_argument(
 parser.add_argument(
     '-o',
     '--output_path',
-    help='path to output test images, defaults to images/out',
-    default='images/out')
+    help='path to output test images, defaults to bounding_boxes',
+    default='bounding_boxes')
 parser.add_argument(
     '-s',
     '--score_threshold',
@@ -60,6 +64,7 @@ def _main(args):
     classes_path = os.path.expanduser(args.classes_path)
     test_path = os.path.expanduser(args.test_path)
     output_path = os.path.expanduser(args.output_path)
+    video_dir_path = os.path.expanduser(args.video_dir_path)
 
     if not os.path.exists(output_path):
         print('Creating output path {}'.format(output_path))
@@ -114,93 +119,96 @@ def _main(args):
         score_threshold=args.score_threshold,
         iou_threshold=args.iou_threshold)
 
-    count=0
-    cap = cv2.VideoCapture("images/abhishek.webm")
-    bBoxesFile = "boxes.txt"
-    bBoxesList = []
-    while(1):
-        count+=1
-        ret, frame = cap.read()
-        if ret==0:
-            print("video completed\n")
-            break
-    # for image_file in os.listdir(test_path):
-    #     try:
-    #         image_type = imghdr.what(os.path.join(test_path, image_file))
-    #         if not image_type:
-    #             continue
-    #     except IsADirectoryError:
-    #         continue
-        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        image = Image.fromarray(image)
-        
-        if is_fixed_size:  # TODO: When resizing we can use minibatch input.
-            resized_image = image.resize(
-                tuple(reversed(model_image_size)), Image.BICUBIC)
-            image_data = np.array(resized_image, dtype='float32')
-        else:
-            # Due to skip connection + max pooling in YOLO_v2, inputs must have
-            # width and height as multiples of 32.
-            new_image_size = (image.width - (image.width % 32),
-                              image.height - (image.height % 32))
-            resized_image = image.resize(new_image_size, Image.BICUBIC)
-            image_data = np.array(resized_image, dtype='float32')
-            print(image_data.shape)
+    video_files = os.listdir(video_dir_path)
 
-        image_data /= 255.
-        image_data = np.expand_dims(image_data, 0)  # Add batch dimension.
-
-        out_boxes, out_scores, out_classes = sess.run(
-            [boxes, scores, classes],
-            feed_dict={
-                yolo_model.input: image_data,
-                input_image_shape: [image.size[1], image.size[0]],
-                K.learning_phase(): 0
-            })
-        # print('Found {} boxes for {}'.format(len(out_boxes), image_file))
-
-        font = ImageFont.truetype(
-            font='font/FiraMono-Medium.otf',
-            size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
-        thickness = (image.size[0] + image.size[1]) // 300
-
-        for i, c in reversed(list(enumerate(out_classes))):
-            predicted_class = class_names[c]
-            box = out_boxes[i]
-            score = out_scores[i]
-
-            label = '{} {:.2f}'.format(predicted_class, score)
-
-            draw = ImageDraw.Draw(image)
-            label_size = draw.textsize(label, font)
-
-            top, left, bottom, right = box
-            top = max(0, np.floor(top + 0.5).astype('int32'))
-            left = max(0, np.floor(left + 0.5).astype('int32'))
-            bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
-            right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
-            print(label, (left, top), (right, bottom),c)
-            if c==0:
-                print("person detected")
-                bBoxesList.append(np.array([count-1,left,top,right,bottom]))
-            if top - label_size[1] >= 0:
-                text_origin = np.array([left, top - label_size[1]])
+    for fileName in video_files:
+        count=0
+        cap = cv2.VideoCapture(video_dir_path+'/'+fileName)
+        bBoxesFile = os.path.join(output_path,os.path.splitext(fileName)[0]+'.'+'.out')
+        bBoxesList = []
+        while(1):
+            count+=1
+            ret, frame = cap.read()
+            if ret==0:
+                break
+        # for image_file in os.listdir(test_path):
+        #     try:
+        #         image_type = imghdr.what(os.path.join(test_path, image_file))
+        #         if not image_type:
+        #             continue
+        #     except IsADirectoryError:
+        #         continue
+            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            image = Image.fromarray(image)
+            
+            if is_fixed_size:  # TODO: When resizing we can use minibatch input.
+                resized_image = image.resize(
+                    tuple(reversed(model_image_size)), Image.BICUBIC)
+                image_data = np.array(resized_image, dtype='float32')
             else:
-                text_origin = np.array([left, top + 1])
+                # Due to skip connection + max pooling in YOLO_v2, inputs must have
+                # width and height as multiples of 32.
+                new_image_size = (image.width - (image.width % 32),
+                                  image.height - (image.height % 32))
+                resized_image = image.resize(new_image_size, Image.BICUBIC)
+                image_data = np.array(resized_image, dtype='float32')
+                print(image_data.shape)
 
-            # My kingdom for a good redistributable image drawing library.
-            for i in range(thickness):
+            image_data /= 255.
+            image_data = np.expand_dims(image_data, 0)  # Add batch dimension.
+
+            out_boxes, out_scores, out_classes = sess.run(
+                [boxes, scores, classes],
+                feed_dict={
+                    yolo_model.input: image_data,
+                    input_image_shape: [image.size[1], image.size[0]],
+                    K.learning_phase(): 0
+                })
+            # print('Found {} boxes for {}'.format(len(out_boxes), image_file))
+
+            font = ImageFont.truetype(
+                font='font/FiraMono-Medium.otf',
+                size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
+            thickness = (image.size[0] + image.size[1]) // 300
+
+            for i, c in reversed(list(enumerate(out_classes))):
+                predicted_class = class_names[c]
+                box = out_boxes[i]
+                score = out_scores[i]
+
+                label = '{} {:.2f}'.format(predicted_class, score)
+
+                draw = ImageDraw.Draw(image)
+                label_size = draw.textsize(label, font)
+
+                top, left, bottom, right = box
+                top = max(0, np.floor(top + 0.5).astype('int32'))
+                left = max(0, np.floor(left + 0.5).astype('int32'))
+                bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
+                right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
+                print(label, (left, top), (right, bottom),c)
+                if c==0:
+                    print("person detected")
+                    bBoxesList.append(np.array([count-1,left,top,right,bottom]))
+                if top - label_size[1] >= 0:
+                    text_origin = np.array([left, top - label_size[1]])
+                else:
+                    text_origin = np.array([left, top + 1])
+
+                # My kingdom for a good redistributable image drawing library.
+                for i in range(thickness):
+                    draw.rectangle(
+                        [left + i, top + i, right - i, bottom - i],
+                        outline=colors[c])
                 draw.rectangle(
-                    [left + i, top + i, right - i, bottom - i],
-                    outline=colors[c])
-            draw.rectangle(
-                [tuple(text_origin), tuple(text_origin + label_size)],
-                fill=colors[c])
-            draw.text(text_origin, label, fill=(0, 0, 0), font=font)
-            del draw
-        bboxesArray = np.array(bBoxesList)
-        np.savetxt('test.out', bboxesArray, delimiter=',')
-        # image.save("/images/result"+str(count)+".jpg", quality=90)
+                    [tuple(text_origin), tuple(text_origin + label_size)],
+                    fill=colors[c])
+                draw.text(text_origin, label, fill=(0, 0, 0), font=font)
+                del draw
+            bboxesArray = np.array(bBoxesList)
+            np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
+            # image.save("/images/result"+str(count)+".jpg", quality=90)
+            print("video {} processed and bounding boxes saved in {}".format(fileName,bBoxesFile))
     sess.close()
 
 
