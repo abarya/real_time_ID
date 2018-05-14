@@ -124,7 +124,7 @@ def _main(args):
     for fileName in video_files:
         count=0
         cap = cv2.VideoCapture(video_dir_path+'/'+fileName)
-        bBoxesFile = os.path.join(output_path,os.path.splitext(fileName)[0]+'.'+'.out')
+        bBoxesFile = os.path.join(output_path,os.path.splitext(fileName)[0]+'.'+'out')
         bBoxesList = []
         while(1):
             count+=1
