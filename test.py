@@ -44,7 +44,7 @@ def _main(args):
 
 			features = conv_model.predict(x)
 			test_data.append(features[-2])
-			labels.append[global_var.classes_dict[name]]
+			labels.append(global_var.classes_dict[name])
 	labels = np.array(labels)
 	test_data = np.array(training_data)
 
