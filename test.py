@@ -43,7 +43,7 @@ def _main(args):
 			x = preprocess_input(x)
 
 			features = conv_model.predict(x)
-			test_data.append(features[-2])
+			test_data.append(features[-2].ravel())
 			labels.append(global_var.classes_dict[name])
 	labels = np.array(labels)
 	test_data = np.array(training_data)
