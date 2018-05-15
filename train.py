@@ -6,8 +6,10 @@ from keras.models import Model
 from sklearn.externals import joblib
 from sklearn import svm
 import argparse
+import random
 import squeezenet
 import global_var
+
 
 parser = argparse.ArgumentParser(
     description='train model on dataset')
@@ -56,8 +58,17 @@ def _main(args):
 			features = conv_model.predict(x)
 			training_data.append(features[-2].ravel())
 			labels.append(global_var.classes_dict[name])
-	labels = np.array(labels)
-	training_data = np.array(training_data)
+
+	num_range = range(len(labels))
+	random_perm = random.shuffle(num_range)
+	
+	train_data = []
+	train_labels = []
+	for i in range(len(labels)):
+		train_data.append(training_data[random_perm[i]])
+		train_labels.append(labels[random_perm[i]])
+	train_data = np.array(train_data)
+	train_labels = np.array(train_labels)
 	print("Number of training samples is {}".format(len(training_data)))
 	print(labels)
 	svm_model = svm.LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
