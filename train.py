@@ -70,7 +70,7 @@ def _main(args):
 	train_data = np.array(train_data)
 	train_labels = np.array(train_labels)
 	print("Number of training samples is {}".format(len(training_data)))
-	print(labels)
+	print(train_labels)
 	svm_model = svm.LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
      intercept_scaling=1, loss='squared_hinge', max_iter=1000,
      multi_class='ovr', penalty='l2', random_state=None, tol=0.0001,
