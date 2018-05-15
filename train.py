@@ -4,6 +4,7 @@ from keras.preprocessing import image
 from keras.applications.imagenet_utils import preprocess_input, decode_predictions
 from keras.models import Model
 from sklearn.externals import joblib
+from sklearn import svm
 import argparse
 import squeezenet
 import global_var
