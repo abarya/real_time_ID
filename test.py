@@ -34,7 +34,7 @@ def _main(args):
 	labels = []
 
 	for name in global_var.CLASSES:
-		path = os.path.join(train_dir,name)
+		path = os.path.join(test_dir,name)
 		image_list = os.listdir(path)
 		for img_name in image_list:
 			img = image.load_img(os.path.join(path,img_name), target_size=(227, 227))
