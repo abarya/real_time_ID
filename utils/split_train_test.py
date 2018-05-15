@@ -52,9 +52,12 @@ def _main(args):
 
 			test_count=0
 			train_count=0
-			for image_name in image_files:
-				img = cv2.imread(os.path.join(image_dir,image_name))
-				if random.random()<split_ratio:
+			random_perm = [x for x in range(len(image_files))]
+			random.seed(10101)  # Fixed seed for consistent colors across runs.
+			random.shuffle(random_perm)  # Shuffle colors to decorrelate adjacent classes.
+			for i in range(len(random_perm)):
+				img = cv2.imread(os.path.join(image_dir,image_files[random_perm[i]]))
+				if i<=int(split_ratio*len(random_perm)):
 					img_name = "{:04d}.png".format(test_count)
 					cv2.imwrite(os.path.join(test_img_dir,img_name),img)
 					test_count+=1
