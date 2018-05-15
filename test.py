@@ -53,7 +53,7 @@ def _main(args):
 	count=0 # number of correct predictions
 	for i in range(len(labels)):
 		pred = svm.predict(test_data[i])
-		print(global_var.CLASSES[pred],global_var.CLASSES[labels[i]])
+		print(global_var.CLASSES[int(pred)],global_var.CLASSES[int(labels[i])])
 		if pred==labels[i]:
 			count+=1
 
