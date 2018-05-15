@@ -57,7 +57,7 @@ def _main(args):
 
 	detection_file = os.path.join(detections_dir,video_name+'.out')
 
-	with open(detection_file, "rb") as csvfile:
+	with open(detection_file, "rt") as csvfile:
 		lines = csv.reader(csvfile)
 		lines = list(lines)
 		for i in range(len(lines)):
