@@ -63,7 +63,7 @@ def _main(args):
      intercept_scaling=1, loss='squared_hinge', max_iter=1000,
      multi_class='ovr', penalty='l2', random_state=None, tol=0.0001,
      verbose=0)
-	svm_model.fit(trainingSet,training_label)
+	svm_model.fit(training_data,labels)
 
 	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 
 
