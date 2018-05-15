@@ -46,7 +46,7 @@ def _main(args):
 			test_data.append(features[-2].ravel())
 			labels.append(global_var.classes_dict[name])
 	labels = np.array(labels)
-	test_data = np.array(training_data)
+	test_data = np.array(test_data)
 
 	svm = joblib.load(model_path)
 
