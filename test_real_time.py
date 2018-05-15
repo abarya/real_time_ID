@@ -77,7 +77,7 @@ def _main(args):
 			cv2.rectangle(frame,(lines[i][1],lines[i][2]),(lines[i][3],lines[i][4]),(0,255,0),3)
 			img = frame[lines[i][2]:lines[i][4],lines[i][1]:lines[i][3],:]
 			img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-			img = Image.fromarray(image)
+			img = Image.fromarray(img)
 			img = img.resize(
 					tuple((227,227)), Image.NEAREST)
 			x = image.img_to_array(img)
