@@ -3,6 +3,7 @@ from keras.preprocessing import image
 from keras.applications.imagenet_utils import preprocess_input, decode_predictions
 from keras.models import Model
 from sklearn.externals import joblib
+import argparse
 import squeezenet
 import global_var
 
@@ -37,7 +38,7 @@ def _main(args):
 
 	if not os.path.exists(model_dir):
 		os.mkdir(model_dir)
-		
+
 	training_data = []
 	labels = []
 
