@@ -79,7 +79,7 @@ def _main(args):
 			image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 			image = Image.fromarray(image)
 			image = image.resize(
-					tuple(227,227), Image.NEAREST)
+					tuple((227,227)), Image.NEAREST)
 			x = image.img_to_array(img)
 			x = np.expand_dims(x, axis=0)
 			x = preprocess_input(x)
