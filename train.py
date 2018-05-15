@@ -59,8 +59,8 @@ def _main(args):
 			training_data.append(features[-2].ravel())
 			labels.append(global_var.classes_dict[name])
 
-	num_range = range(len(labels))
-	random_perm = random.shuffle(num_range)
+	random_perm = range(len(labels))
+	random.shuffle(random_perm)
 	
 	train_data = []
 	train_labels = []
