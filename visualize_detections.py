@@ -87,7 +87,7 @@ def _main(args):
                 i+=1  
             frame = cv2.resize(frame,(frame.shape[1]/2,frame.shape[0]/2))  
             cv2.imshow("f",frame)
-            if(cv2.waitKey(20)==27):
+            if(cv2.waitKey(100)==27):
                 break
             count+=1
 
