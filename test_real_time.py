@@ -76,10 +76,8 @@ def _main(args):
 		while(i<len(lines) and count==lines[i][0]):
 			cv2.rectangle(frame,(lines[i][1],lines[i][2]),(lines[i][3],lines[i][4]),(0,255,0),3)
 			img = frame[lines[i][2]:lines[i][4],lines[i][1]:lines[i][3],:]
-			img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-			img = Image.fromarray(img)
-			img = img.resize(
-					tuple((227,227)), Image.NEAREST)
+			cv2.imwrite("img.png",img)
+			img = image.load_img(os.path.join(path,img_name), target_size=(227, 227))
 			x = image.img_to_array(img)
 			x = np.expand_dims(x, axis=0)
 			x = preprocess_input(x)
@@ -93,7 +91,7 @@ def _main(args):
 		os.mkdir(result_dir)
 
 	bboxesPredictionArray = np.array(lines)
-	np.savetxt(result_dir+video_name+'.out', bboxesPredictionArray, delimiter=',')
+	np.savetxt(result_dir+'/'+video_name+'.out', bboxesPredictionArray, delimiter=',')
 
 if __name__ == '__main__':
     _main(parser.parse_args())
