@@ -93,7 +93,7 @@ def _main(args):
 		os.mkdir(result_dir)
 
 	bboxesPredictionArray = np.array(lines)
-	np.savetxt(result_dir+video+'.out', bboxesPredictionArray, delimiter=',')
+	np.savetxt(result_dir+video_name+'.out', bboxesPredictionArray, delimiter=',')
 
 if __name__ == '__main__':
     _main(parser.parse_args())
