@@ -1,24 +1,68 @@
 import numpy as np
-
 from keras.preprocessing import image
 from keras.applications.imagenet_utils import preprocess_input, decode_predictions
 from keras.models import Model
-
+from sklearn.externals import joblib
 import squeezenet
+import global_var
 
-model =  squeezenet.SqueezeNet()
+parser = argparse.ArgumentParser(
+    description='train model on dataset')
 
-img = image.load_img('data/abhishek/0000.png', target_size=(227, 227))
-x = image.img_to_array(img)
-x = np.expand_dims(x, axis=0)
-x = preprocess_input(x)
+parser.add_argument(
+    '--train_dir',
+    help='path to directory containing training images',
+    default='data/train')
 
-layer_outputs = [layer.output for layer in model.layers]
-viz_model = Model(input=model.input, output=layer_outputs)
+parser.add_argument(
+    '--test_dir',
+    help='path to directory containing test images',
+    default='data/test')
 
-features = viz_model.predict(x)
+parser.add_argument(
+	'--model_dir',
+	help='directory where trained model will be saved',
+	default='model')
 
-for f in features:
-  print(f.shape)
+def get_model():
+	model =  squeezenet.SqueezeNet()
+	layer_outputs = [layer.output for layer in model.layers]
+	return Model(input=model.input, output=layer_outputs)
 
-print(features[-2])
+def _main(args):
+	train_dir = os.path.expanduser(args.train_dir)
+	test_dir = os.path.expanduser(args.test_dir)
+	model_dir = os.path.expanduser(args.model_dir) #classifier
+	conv_model = get_model() #squeezenet for feature extraction
+
+	if not os.path.exists(model_dir):
+		os.mkdir(model_dir)
+		
+	training_data = []
+	labels = []
+
+	for name in global_var.CLASSES:
+		path = os.path.join(train_dir,name)
+		image_list = os.listdir(path)
+		for img_name in image_list:
+			img = image.load_img(os.path.join(path,img_name), target_size=(227, 227))
+			x = image.img_to_array(img)
+			x = np.expand_dims(x, axis=0)
+			x = preprocess_input(x)
+
+			features = conv_model.predict(x)
+			training_data.append(features[-2])
+			labels.append[global_var.classes_dict[name]]
+	labels = np.array(labels)
+	training_data = np.array(training_data)
+
+	svm_model = svm.LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
+     intercept_scaling=1, loss='squared_hinge', max_iter=1000,
+     multi_class='ovr', penalty='l2', random_state=None, tol=0.0001,
+     verbose=0)
+	svm_model.fit(trainingSet,training_label)
+
+	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 
+
+if __name__ == '__main__':
+    _main(parser.parse_args())
