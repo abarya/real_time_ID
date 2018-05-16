@@ -149,7 +149,7 @@ def _main(args):
             if ret==0:
                 break
             if count%3!=1 and len(bBoxesList)>0:
-                bBoxesList.append(np.array([bBoxesList[0]+1,bBoxesList[1],bBoxesList[2],bBoxesList[3],bBoxesList[4]]))
+                bBoxesList.append(np.array([bBoxesList[-1][0]+1,bBoxesList[-1][1],bBoxesList[-1][2],bBoxesList[-1][3],bBoxesList[-1][4]]))
 
         # for image_file in os.listdir(test_path):
         #     try:
