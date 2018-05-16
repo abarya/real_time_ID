@@ -25,7 +25,7 @@ parser.add_argument(
 parser.add_argument(
     '--video_name',
     help='name of the video file',
-    default=None)
+    default='')
 
 parser.add_argument(
     '--video_dir_path',
@@ -129,7 +129,7 @@ def _main(args):
         iou_threshold=args.iou_threshold)
 
     video_files = []
-    if video_name is None:
+    if video_name=="":
         video_files = os.listdir(video_dir_path)
     else:
         video_files = [video_name]
@@ -223,9 +223,8 @@ def _main(args):
 
                 if count%30==0:
                     end = time.time()
+                    progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps is {}'.format(count/float(end-start)), length = 50)
                     # print("fps is {}".format(30./(end-start)))
-                    start = end
-                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
         bboxesArray = np.array(bBoxesList)
         np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
