@@ -133,7 +133,7 @@ def _main(args):
         video_files = os.listdir(video_dir_path)
     else:
         video_files = [video_name]
-
+    print(video_files)
     for fileName in video_files:
         count=0
         cap = cv2.VideoCapture(video_dir_path+'/'+fileName)
