@@ -221,10 +221,12 @@ def _main(args):
                 draw.text(text_origin, label, fill=(0, 0, 0), font=font)
                 del draw
 
-                if count%30==0:
-                    end = time.time()
-                    progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps is {}'.format(count/float(end-start)), length = 50)
-                    # print("fps is {}".format(30./(end-start)))
+            if count%30==0:
+                end = time.time()
+                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps is {}'.format(30/float(end-start)), length = 50)
+                start = end
+                print("processed frames = {}".format(count-1))
+                # print("fps is {}".format(30./(end-start)))
 
         bboxesArray = np.array(bBoxesList)
         np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
