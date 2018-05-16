@@ -151,7 +151,6 @@ def _main(args):
             if count%3!=1 and len(bBoxesList)>0:
                 bBoxesList.append(np.array([bBoxesList[-1][0]+1,bBoxesList[-1][1],bBoxesList[-1][2],bBoxesList[-1][3],bBoxesList[-1][4]]))
                 continue
-            print("hello")
         # for image_file in os.listdir(test_path):
         #     try:
         #         image_type = imghdr.what(os.path.join(test_path, image_file))
@@ -212,9 +211,9 @@ def _main(args):
                     # print("person detected")
                     bBoxesList.append(np.array([count-1,left,top,right,bottom]))
 
-            if count%30==0:
+            if count%31==0:
                 end = time.time()
-                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps is {}'.format(30/float(end-start)), length = 50)
+                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps is {}'.format(31/float(end-start)), length = 50)
                 start = end
                 print("processed frames = {}".format(count-1))
                 # print("fps is {}".format(30./(end-start)))
