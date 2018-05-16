@@ -1,5 +1,3 @@
 #!/bin/bash
-fileid="1bEBwy9DA3ddSGctgWq3mhjidbL9bmDIQ"
-filename="yolov2.h5"
-curl -c ./cookie -s -L "https://drive.google.com/uc?export=download&id=${fileid}" > /dev/null
-curl -Lb ./cookie "https://drive.google.com/uc?export=download&confirm=`awk '/download/ {print $NF}' ./cookie`&id=${fileid}" -o ${filename}
+wget https://pjreddie.com/media/files/yolov2.weights
+./yad2k.py yolov2.cfg yolov2.weights model_data/yolo.h5
