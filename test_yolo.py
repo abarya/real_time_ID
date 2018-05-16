@@ -20,6 +20,12 @@ parser.add_argument(
     'model_path',
     help='path to h5 model file containing body'
     'of a YOLO_v2 model')
+
+parser.add_argument(
+    '--video_name',
+    help='name of the video file',
+    default=None)
+
 parser.add_argument(
     '--video_dir_path',
     help='path to directory of input videos, defaults to data',
@@ -66,6 +72,7 @@ def _main(args):
     test_path = os.path.expanduser(args.test_path)
     output_path = os.path.expanduser(args.output_path)
     video_dir_path = os.path.expanduser(args.video_dir_path)
+    video_name = os.path.expanduser(args.video_name)
 
     if not os.path.exists(output_path):
         print('Creating output path {}'.format(output_path))
@@ -120,7 +127,11 @@ def _main(args):
         score_threshold=args.score_threshold,
         iou_threshold=args.iou_threshold)
 
-    video_files = os.listdir(video_dir_path)
+    video_files = []
+    if video_name is None:
+        video_files = os.listdir(video_dir_path)
+    else:
+        video_files = [video_name]
 
     for fileName in video_files:
         count=0
