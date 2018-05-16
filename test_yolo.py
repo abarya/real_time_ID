@@ -145,6 +145,12 @@ def _main(args):
         start = time.time()
         while(1):
             count+=1
+            if count%30==0:
+                end = time.time()
+                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps is {}'.format(30/float(end-start)), length = 50)
+                start = end
+                print("processed frames = {}".format(count-1))
+                # print("fps is {}".format(30./(end-start)))
             ret, frame = cap.read()
             if ret==0:
                 break
@@ -210,13 +216,6 @@ def _main(args):
                 if c==0 and score>0.55:
                     # print("person detected")
                     bBoxesList.append(np.array([count-1,left,top,right,bottom]))
-
-            if count%31==0:
-                end = time.time()
-                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps is {}'.format(31/float(end-start)), length = 50)
-                start = end
-                print("processed frames = {}".format(count-1))
-                # print("fps is {}".format(30./(end-start)))
 
         bboxesArray = np.array(bBoxesList)
         np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
