@@ -148,6 +148,9 @@ def _main(args):
             ret, frame = cap.read()
             if ret==0:
                 break
+            if count%3!=1 and len(bBoxesList)>0:
+                bBoxesList.append(np.array([bBoxesList[0]+1,bBoxesList[1],bBoxesList[2],bBoxesList[3],bBoxesList[4]]))
+
         # for image_file in os.listdir(test_path):
         #     try:
         #         image_type = imghdr.what(os.path.join(test_path, image_file))
@@ -207,21 +210,6 @@ def _main(args):
                 if c==0 and score>0.55:
                     # print("person detected")
                     bBoxesList.append(np.array([count-1,left,top,right,bottom]))
-                if top - label_size[1] >= 0:
-                    text_origin = np.array([left, top - label_size[1]])
-                else:
-                    text_origin = np.array([left, top + 1])
-
-                # My kingdom for a good redistributable image drawing library.
-                for i in range(thickness):
-                    draw.rectangle(
-                        [left + i, top + i, right - i, bottom - i],
-                        outline=colors[c])
-                draw.rectangle(
-                    [tuple(text_origin), tuple(text_origin + label_size)],
-                    fill=colors[c])
-                draw.text(text_origin, label, fill=(0, 0, 0), font=font)
-                del draw
 
             if count%30==0:
                 end = time.time()
