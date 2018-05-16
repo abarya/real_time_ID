@@ -130,7 +130,9 @@ def _main(args):
 
     video_files = []
     if video_name=="":
-        video_files = os.listdir(video_dir_path)
+        for files in os.listdir(video_dir_path):
+            if files.endswith(".webm")
+                video_files.append(files)
     else:
         video_files = [video_name]
     print(video_files)
