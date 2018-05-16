@@ -11,6 +11,7 @@ import time
 from keras import backend as K
 from keras.models import load_model
 from PIL import Image, ImageDraw, ImageFont
+from utils import progress_bar
 
 from yolo.models.keras_yolo import yolo_eval, yolo_head
 
@@ -136,6 +137,7 @@ def _main(args):
     for fileName in video_files:
         count=0
         cap = cv2.VideoCapture(video_dir_path+'/'+fileName)
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         bBoxesFile = os.path.join(output_path,os.path.splitext(fileName)[0]+'.'+'out')
         bBoxesList = []
         start = time.time()
@@ -199,9 +201,9 @@ def _main(args):
                 left = max(0, np.floor(left + 0.5).astype('int32'))
                 bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
                 right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
-                print(label, (left, top), (right, bottom),c)
+                # print(label, (left, top), (right, bottom),c)
                 if c==0 and score>0.55:
-                    print("person detected")
+                    # print("person detected")
                     bBoxesList.append(np.array([count-1,left,top,right,bottom]))
                 if top - label_size[1] >= 0:
                     text_origin = np.array([left, top - label_size[1]])
@@ -221,8 +223,9 @@ def _main(args):
 
                 if count%30==0:
                     end = time.time()
-                    print("fps is {}".format(30./(end-start)))
+                    # print("fps is {}".format(30./(end-start)))
                     start = end
+                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps={}'.format((time.time()-start)), length = 50)
 
         bboxesArray = np.array(bBoxesList)
         np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
