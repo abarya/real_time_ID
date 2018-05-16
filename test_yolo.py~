@@ -225,7 +225,7 @@ def _main(args):
                     end = time.time()
                     # print("fps is {}".format(30./(end-start)))
                     start = end
-                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete', length = 50)
+                progress_bar.printProgressBar(count + 1, total_frames, prefix = 'Progress:', suffix = 'Complete. fps={}'.format((time.time()-start)), length = 50)
 
         bboxesArray = np.array(bBoxesList)
         np.savetxt(bBoxesFile, bboxesArray, delimiter=',')
