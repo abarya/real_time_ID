@@ -213,7 +213,7 @@ def _main(args):
                 bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
                 right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
                 # print(label, (left, top), (right, bottom),c)
-                if c==0 and score>0.55:
+                if c==0 and score>0.6:
                     # print("person detected")
                     bBoxesList.append(np.array([count-1,left,top,right,bottom]))
 
