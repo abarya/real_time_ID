@@ -26,4 +26,4 @@ def create_matrix(labels,predictions):
 	cv2.waitKey(0)
 	return matrix
 
-create_matrix([1,1,1,1,1,1,1,1,2,2,2,2,2],[1,1,1,1,1,1,2,2,2,2,2,2,2])
+# create_matrix([1,1,1,1,1,1,1,1,2,2,2,2,2],[1,1,1,1,1,1,2,2,2,2,2,2,2])
