@@ -7,7 +7,7 @@ from sklearn.externals import joblib
 import argparse
 import squeezenet
 import global_var
-
+from utils import confusion_matrix 
 parser = argparse.ArgumentParser(
     description='test model on dataset')
 
@@ -51,12 +51,15 @@ def _main(args):
 	svm = joblib.load(model_path)
 
 	count=0 # number of correct predictions
+	predictions = []
 	for i in range(len(labels)):
 		pred = svm.predict(test_data[i])
 		print(global_var.CLASSES[int(pred)],global_var.CLASSES[int(labels[i])])
+		predictions.append(pred)
 		if pred==labels[i]:
 			count+=1
 
+	confusion_matrix.create_matrix(labels,predictions)
 	accuracy = count/float(len(labels))
 	print("Number of images in test set is {}.\nAccuracy of model is {}%.".format(len(labels),accuracy*100))
 

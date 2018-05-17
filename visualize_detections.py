@@ -23,7 +23,7 @@ parser.add_argument(
 
 
 def _main(args):
-    predictions=0
+    predictions=1
     if predictions==0:
         video_path = os.path.expanduser(args.video_path)
         video_file = os.path.expanduser(args.video_file)
