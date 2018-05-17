@@ -11,8 +11,13 @@ def create_matrix(labels,predictions):
 	for i in range(len(labels)):
 		matrix[labels[i]][predictions[i]]+=1
 
-	matrix = matrix*10
+	image = np.zeros((60*num_classes,60*num_classes),dtype='uint8')
+
+	size = image.shape[0]
+	for i in range(size):
+		for j in range(size):
+			image[i][j] = matrix[i/60][j/60]
 	print(matrix)
-	cv2.imwrite("image.png",matrix)
+	cv2.imwrite("confusion_matrix.png",image)
 	cv2.waitKey(0)
 	return matrix
