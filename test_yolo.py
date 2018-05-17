@@ -143,6 +143,7 @@ def _main(args):
         bBoxesFile = os.path.join(output_path,os.path.splitext(fileName)[0]+'.'+'out')
         bBoxesList = []
         start = time.time()
+        num_detections=0 #number of detected persons in a frame, is helpful when there are more than 1 person
         while(1):
             count+=1
             if count%30==0:
@@ -155,9 +156,10 @@ def _main(args):
             if ret==0:
                 break
             if count%3!=1 and len(bBoxesList)>0:
-                reverse_count=len(bBoxesList)-1
-                while reverse_count>0
-                bBoxesList.append(np.array([bBoxesList[-1][0]+1,bBoxesList[-1][1],bBoxesList[-1][2],bBoxesList[-1][3],bBoxesList[-1][4]]))
+                counter = -num_detections
+                while counter<0:
+                    bBoxesList.append(np.array([bBoxesList[counter][0]+1,bBoxesList[counter][1],bBoxesList[counter][2],bBoxesList[counter][3],bBoxesList[counter][4]]))
+                    counter+=1
                 continue
         # for image_file in os.listdir(test_path):
         #     try:
@@ -199,6 +201,7 @@ def _main(args):
                 size=np.floor(3e-2 * image.size[1] + 0.5).astype('int32'))
             thickness = (image.size[0] + image.size[1]) // 300
 
+            num_detections=0
             for i, c in reversed(list(enumerate(out_classes))):
                 predicted_class = class_names[c]
                 box = out_boxes[i]
@@ -217,6 +220,7 @@ def _main(args):
                 # print(label, (left, top), (right, bottom),c)
                 if c==0 and score>0.6:
                     # print("person detected")
+                    num_detections+=1
                     bBoxesList.append(np.array([count-1,left,top,right,bottom]))
 
         bboxesArray = np.array(bBoxesList)
