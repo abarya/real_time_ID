@@ -13,7 +13,7 @@ def create_matrix(labels,predictions):
 
 	image = np.zeros((60*num_classes,60*num_classes),dtype='uint8')
 	
-	num_samples = mp.zeros(num_classes)
+	num_samples = np.zeros(num_classes)
 	for i in range(len(labels)):
 		num_classes[labels[i]]+=1
 
