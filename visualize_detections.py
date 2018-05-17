@@ -23,7 +23,7 @@ parser.add_argument(
 
 
 def _main(args):
-    predictions=1
+    predictions=0
     if predictions==0:
         video_path = os.path.expanduser(args.video_path)
         video_file = os.path.expanduser(args.video_file)
@@ -42,20 +42,20 @@ def _main(args):
         count=0
         i=0
         while(1):
-    		ret, frame = cap.read()
-    		if ret==0:
-    			print("video read completely\n")
-    			break
+			ret, frame = cap.read()
+			if ret==0:
+				print("video read completely\n")
+				break
 
-    		while(i<len(lines) and count==lines[i][0]):
-    			cv2.rectangle(frame,(lines[i][1],lines[i][2]),(lines[i][3],lines[i][4]),(0,255,0),3)
-                img = frame[lines[i][2]:lines[i][4],lines[i][1]:lines[i][3],:]
-                i+=1  
-    		frame = cv2.resize(frame,(frame.shape[1]/2,frame.shape[0]/2))  
-    		cv2.imshow("f",frame)
-    		if(cv2.waitKey(100)==27):
-    			break
-    		count+=1
+			while(i<len(lines) and count==lines[i][0]):
+				cv2.rectangle(frame,(lines[i][1],lines[i][2]),(lines[i][3],lines[i][4]),(0,255,0),3)
+				img = frame[lines[i][2]:lines[i][4],lines[i][1]:lines[i][3],:]
+				i+=1  
+			frame = cv2.resize(frame,(frame.shape[1]/2,frame.shape[0]/2))  
+			cv2.imshow("f",frame)
+			if(cv2.waitKey(100)==27):
+				break
+			count+=1
     else:
         print "hell"
         video_path = os.path.expanduser(args.video_path)
