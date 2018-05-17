@@ -16,8 +16,11 @@ def create_matrix(labels,predictions):
 	size = image.shape[0]
 	for i in range(size):
 		for j in range(size):
-			image[i][j] = matrix[i/60][j/60]
+			print(i,j,i/60,j/60)
+			image[i][j] = matrix[int(i/60)][int(j/60)]
 	print(matrix)
 	cv2.imwrite("confusion_matrix.png",image)
 	cv2.waitKey(0)
 	return matrix
+
+create_matrix([1,1,1,1,1,1,1,1,2,2,2,2,2],[1,1,1,1,1,1,2,2,2,2,2,2,2])
