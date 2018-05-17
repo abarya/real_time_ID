@@ -24,12 +24,15 @@ def create_matrix(labels,predictions):
 	print(matrix)
 	image = cv2.applyColorMap(image, cv2.COLORMAP_JET)
 	cv2.imshow("image",image)
+	cv2.imwrite("confusion_matrix.png",image)
 	cv2.waitKey(0)
-
+	image=cv2.imread("confusion_matrix.png")
 	for i in range(num_classes):
 		for j in range(num_classes):
 			cv2.putText(image,'{}'.format(matrix[i][j]/float(num_samples[i])),(j*60+20,i*60+30),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255),1,cv2.LINE_AA)
 	cv2.imwrite("confusion_matrix.png",image)
+	cv2.imshow("image",image)
+	cv2.waitKey(0)
 	return matrix
 
-# create_matrix([1,1,1,1,1,1,1,1,2,2,2,2,2],[1,1,1,1,1,1,2,2,2,2,2,2,2])
+# create_matrix([0,0,1,1],[0,1,1,0])
