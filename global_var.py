@@ -1,3 +1,3 @@
 #This file will contain global variables that will be shared across multiple modules
-CLASSES = ['agniv','abhishek','anadi','suyash','pankaj','sagnik','nikhil','sahib','utkarsh','raghav']
-classes_dict = {'agniv':0,'abhishek':1,'anadi':2,'suyash':3,'pankaj':4,'sagnik':5,'nikhil':6,'sahib':7,'utkarsh':8,'raghav':9}
+CLASSES = ['agniv','abhishek','anadi','suyash','pankaj','sagnik','nikhil','sahib','utkarsh','raghav','akash_jj','anubhav_gaba','ashish_parida','govind','harshit','kunal','rishav','rituraj','todi','udit','vinay']
+classes_dict = {'agniv':0,'abhishek':1,'anadi':2,'suyash':3,'pankaj':4,'sagnik':5,'nikhil':6,'sahib':7,'utkarsh':8,'raghav':9,'akash_jj':10,'anubhav_gaba':11,'ashish_parida':12,'govind':13,'harshit':14,'kunal':15,'rishav':16,'rituraj':17,'todi':18,'udit':19,'vinay':20}

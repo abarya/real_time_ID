@@ -5,7 +5,7 @@ import cv2
 import global_var
 
 def create_matrix(labels,predictions):
-	num_classes = len(global_var.CLASSES)
+	num_classes = 2#len(global_var.CLASSES)
 	matrix = np.zeros((num_classes,num_classes),dtype='uint8')
 
 	for i in range(len(labels)):
@@ -27,10 +27,11 @@ def create_matrix(labels,predictions):
 	cv2.imwrite("confusion_matrix.png",image)
 	
 	image=cv2.imread("confusion_matrix.png")
+	font = cv2.InitFont(cv.CV_FONT_HERSHEY_SIMPLEX, 1, 1, shear=0, thickness=2, lineType=8)
 	for i in range(num_classes):
 		for j in range(num_classes):
-			cv2.putText(image,'{}'.format(matrix[i][j]/float(num_samples[i])),(j*60+20,i*60+30),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,255),1,cv2.LINE_AA)
+			cv2.putText(image,'{}'.format(matrix[i][j]/float(num_samples[i])),(j*60+20,i*60+30),font,1,(255,255,255),1,cv2.LINE_AA)
 	cv2.imwrite("confusion_matrix.png",image)
 	return matrix
 
-# create_matrix([0,0,1,1],[0,1,1,0])
+create_matrix([0,0,1,1],[0,1,1,0])
