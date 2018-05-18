@@ -71,10 +71,10 @@ def _main(args):
 	train_labels = np.array(train_labels)
 	print("Number of training samples is {}".format(len(training_data)))
 	print(train_labels)
-	svm_model = svm.LinearSVC(C=1.0, class_weight=None, dual=True, fit_intercept=True,
-     intercept_scaling=1, loss='squared_hinge', max_iter=1000,
-     multi_class='ovr', penalty='l2', random_state=None, tol=0.0001,
-     verbose=0)
+	svm_model = svm.SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
+    max_iter=-1, probability=True, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)
 	svm_model.fit(training_data,labels)
 
 	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 

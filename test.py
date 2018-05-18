@@ -51,13 +51,26 @@ def _main(args):
 	svm = joblib.load(model_path)
 
 	count=0 # number of correct predictions
+	r1=0
+	r2=0
+	r5=0
+	r10=0
 	predictions = []
 	for i in range(len(labels)):
 		pred = svm.predict(test_data[i])
+		probs = predict_proba(test_data[i])
+		probs = [b[0] for b in sorted(enumerate(probs),key=lambda i:i[1],reverse=True)]
+		if labels[i] in probs[:1]:
+			r1+=1
+		if labels[i] in probs[:2]:
+			r2+=1
+		if labels[i] in probs[:5]:
+			r5+=1
+		if labels[i] in probs[:10]:
+			r10+=1
 		print(global_var.CLASSES[int(pred)],global_var.CLASSES[int(labels[i])])
 		predictions.append(pred)
-		if pred==labels[i]:
-			count+=1
+	print(r1,r2,r5,r10)
 
 	confusion_matrix.create_matrix(labels,predictions)
 	accuracy = count/float(len(labels))
