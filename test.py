@@ -58,7 +58,7 @@ def _main(args):
 	predictions = []
 	for i in range(len(labels)):
 		pred = svm.predict(test_data[i])
-		probs = predict_proba(test_data[i])
+		probs = svm.predict_proba(test_data[i])
 		probs = [b[0] for b in sorted(enumerate(probs),key=lambda i:i[1],reverse=True)]
 		if labels[i] in probs[:1]:
 			r1+=1
