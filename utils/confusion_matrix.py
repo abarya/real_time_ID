@@ -30,7 +30,8 @@ def create_matrix(labels,predictions):
 	# font = cv2.InitFont(cv.CV_FONT_HERSHEY_SIMPLEX, 1, 1, shear=0, thickness=2, lineType=8)
 	for i in range(num_classes):
 		for j in range(num_classes):
-			cv2.putText(image,'{}'.format(matrix[i][j]/float(num_samples[i])),(j*60+20,i*60+30),font,1,(255,255,255),1,cv2.LINE_AA)
+			x=4
+			# cv2.putText(image,'{}'.format(matrix[i][j]/float(num_samples[i])),(j*60+20,i*60+30),font,1,(255,255,255),1,cv2.LINE_AA)
 	cv2.imwrite("confusion_matrix.png",image)
 	return matrix
 
