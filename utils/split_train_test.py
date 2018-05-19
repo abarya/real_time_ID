@@ -1,11 +1,11 @@
 import sys
-sys.path.append('/home/arya/Documents/real_time_ID')
+sys.path.append('..')
 import os
 import cv2
 import argparse
 import random
 import global_var
-
+exit()
 parser = argparse.ArgumentParser(
     description='Splitting dataset into training and test set')
 
