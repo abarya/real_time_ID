@@ -94,7 +94,7 @@ def _main(args):
             img_name = "{:05d}.jpg".format(count)
             print img_name
             cv2.imwrite("images_for_video/"+img_name,frame)
-            if(cv2.waitKey(1)==27):
+            if(cv2.waitKey(25)==27):
                 break
             count+=1
         print "accuracy",float(correct)/i
