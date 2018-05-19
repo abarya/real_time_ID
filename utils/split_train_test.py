@@ -104,6 +104,7 @@ def _main(args):
 					img_path = os.path.join(image_dir,image_list[random_perm[i]])
 					if os.path.splitext(img_path)[1]!='.png':
 						continue
+					img = cv2.imread(img_path)
 					if i<=int(split_ratio*len(random_perm)):
 						img_name = "{:04d}.png".format(test_count)
 						cv2.imwrite(os.path.join(test_img_dir,img_name),img)
