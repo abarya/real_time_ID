@@ -5,7 +5,7 @@ import cv2
 import argparse
 import random
 import global_var
-exit()
+
 parser = argparse.ArgumentParser(
     description='Splitting dataset into training and test set')
 
