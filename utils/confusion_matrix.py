@@ -32,8 +32,8 @@ def create_matrix(labels,predictions):
 	cv2.line(image, (0,0), ((num_classes)*60,0), (0,0,0),3)
 	cv2.line(image, (0,0), (0,(num_classes)*60), (0,0,0),3)
 	for i in range(num_classes):
-		cv2.line(image, (0,(i+1)*60), ((num_classes)*60,(i+1)*60), (0,0,0),3)
-		cv2.line(image, ((i+1)*60,0), ((i+1)*60,(num_classes)*60), (0,0,0),3)
+		cv2.line(image, (0,(i+1)*60), ((num_classes)*60,(i+1)*60), (255,255,255),3)
+		cv2.line(image, ((i+1)*60,0), ((i+1)*60,(num_classes)*60), (255,255,255),3)
 		for j in range(num_classes):
 			cv2.putText(image,'{:.2f}'.format(matrix[i][j]/float(num_samples[i])),(j*60+10,i*60+35),font,0.5,(0,0,0),1,cv2.LINE_AA)
 	cv2.imwrite("confusion_matrix.png",image)
