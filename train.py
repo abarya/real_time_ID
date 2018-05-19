@@ -48,6 +48,7 @@ def _main(args):
 	dir_list = os.listdir(train_dir)
 
 	for i,name in enumerate(dir_list):
+		print("{:.2f} completed".format(i/float(len(dir_list))))
 		path = os.path.join(train_dir,name)
 		image_list = os.listdir(path)
 		for img_name in image_list:
