@@ -72,7 +72,7 @@ def _main(args):
 	print("Number of training samples is {}".format(len(training_data)))
 	print(train_labels)
 	svm_model = svm.SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-    decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
+    decision_function_shape='ovr', degree=3, gamma='auto', kernel='linear',
     max_iter=-1, probability=True, random_state=None, shrinking=True,
     tol=0.001, verbose=False)
 	svm_model.fit(training_data,labels)
