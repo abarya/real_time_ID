@@ -32,7 +32,7 @@ def _main(args):
 	conv_model = get_model() #squeezenet for feature extraction
 	test_data = []
 	labels = []
-	dir_list = os.listdir(train_dir)
+	dir_list = os.listdir(test_dir)
 
 	for i,name in enumerate(dir_list):
 		path = os.path.join(test_dir,name)
