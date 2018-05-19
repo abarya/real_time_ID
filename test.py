@@ -74,10 +74,10 @@ def _main(args):
 		print(global_var.CLASSES[int(pred)],global_var.CLASSES[int(labels[i])])
 		predictions.append(pred)
 	
-	print("rank1 - accuracy = {}".format(100*r1/float(len(labels))))
-	print("rank2 - accuracy = {}".format(100*r2/float(len(labels))))
-	print("rank5 - accuracy = {}".format(100*r5/float(len(labels))))
-	print("rank10 - accuracy = {}".format(100*r10/float(len(labels))))
+	print("rank1 - accuracy = {}".format((100*r1)/float(len(labels))))
+	print("rank2 - accuracy = {}".format((100*r2)/float(len(labels))))
+	print("rank5 - accuracy = {}".format((100*r5)/float(len(labels))))
+	print("rank10 - accuracy = {}".format((100*r10)/float(len(labels))))
 
 	confusion_matrix.create_matrix(labels,predictions)
 	accuracy = r1/float(len(labels))
