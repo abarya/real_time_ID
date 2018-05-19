@@ -73,10 +73,14 @@ def _main(args):
 			r10+=1
 		print(global_var.CLASSES[int(pred)],global_var.CLASSES[int(labels[i])])
 		predictions.append(pred)
-	print(r1,r2,r5,r10)
+	
+	print("rank1 - accuracy = {}".format(100*r1/float(len(labels))))
+	print("rank2 - accuracy = {}".format(100*r2/float(len(labels))))
+	print("rank5 - accuracy = {}".format(100*r5/float(len(labels))))
+	print("rank10 - accuracy = {}".format(100*r10/float(len(labels))))
 
 	confusion_matrix.create_matrix(labels,predictions)
-	accuracy = count/float(len(labels))
+	accuracy = r1/float(len(labels))
 	print("Number of images in test set is {}.\nAccuracy of model is {}%.".format(len(labels),accuracy*100))
 
 if __name__ == '__main__':
