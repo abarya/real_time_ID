@@ -32,8 +32,9 @@ def _main(args):
 	conv_model = get_model() #squeezenet for feature extraction
 	test_data = []
 	labels = []
+	dir_list = os.listdir(train_dir)
 
-	for name in global_var.CLASSES:
+	for i,name in enumerate(dir_list):
 		path = os.path.join(test_dir,name)
 		image_list = os.listdir(path)
 		for img_name in image_list:
@@ -44,7 +45,7 @@ def _main(args):
 
 			features = conv_model.predict(x)
 			test_data.append(features[-2].ravel().reshape(1,-1))
-			labels.append(global_var.classes_dict[name])
+			labels.append(i)
 	labels = np.array(labels)
 	test_data = np.array(test_data)
 
@@ -69,7 +70,7 @@ def _main(args):
 			r5+=1
 		if labels[i] in probs[:10]:
 			r10+=1
-		print(global_var.CLASSES[int(pred)],global_var.CLASSES[int(labels[i])])
+		print(dir_list[int(pred)],dir_list[int(labels[i])])
 		predictions.append(pred)
 	
 	print("rank1 - accuracy = {}".format((100*r1)/float(len(labels))))

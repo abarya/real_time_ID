@@ -45,8 +45,9 @@ def _main(args):
 
 	training_data = []
 	labels = []
+	dir_list = os.listdir(train_dir)
 
-	for name in global_var.CLASSES:
+	for i,name in enumerate(dir_list):
 		path = os.path.join(train_dir,name)
 		image_list = os.listdir(path)
 		for img_name in image_list:
@@ -57,7 +58,7 @@ def _main(args):
 
 			features = conv_model.predict(x)
 			training_data.append(features[-2].ravel())
-			labels.append(global_var.classes_dict[name])
+			labels.append(i)
 
 	random_perm = [x for x in range(len(labels))]
 	random.shuffle(random_perm)
