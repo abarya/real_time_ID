@@ -123,7 +123,7 @@ def _main(args):
 		aug_dir = data_dir + 'augmented_data'
 
 		if not os.path.exists(os.path.abspath(aug_dir)):
-			os.mkdir(augdir)
+			os.mkdir(aug_dir)
 
 		cam = ['cam_a','cam_b']
 		
