@@ -52,8 +52,8 @@ def _main(args):
 	svm = joblib.load(model_path)
 
 	count=0 # number of correct predictions
-	rank = [1,2,5,10,20,50,100]
-	rank_accuracy = [0,0,0,0,0,0,0]
+	rank = [1,2,5,8,10,12,15,18,20,30,40,50,60,70,80,90,100]
+	rank_accuracy = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 	predictions = []
 	for i in range(len(labels)):
 		pred = svm.predict(test_data[i])
