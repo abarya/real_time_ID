@@ -1,17 +1,19 @@
 import sys
 sys.path.append('..')
 import os
+import shutil
 import cv2
 import argparse
 import random
 import global_var
+import pre_processing
 
 parser = argparse.ArgumentParser(
     description='Splitting dataset into training and test set')
 
 parser.add_argument(
 	'dataset',
-	help='which dataset to use, MAGI or ILID')
+	help='which dataset to use, viper, MAGI or ILID')
 
 parser.add_argument(
     '--data_dir',
@@ -114,6 +116,44 @@ def _main(args):
 						cv2.imwrite(os.path.join(train_img_dir,img_name),img)
 						train_count+=1
 			print(train_count,test_count)
+	elif dataset=='viper':
+		data_dir = '../VIPeR/'
+		train_dir = os.path.join(data_dir,'train')
+		test_dir = os.path.join(data_dir,'test')
+		aug_dir = data_dir + 'augmented_data'
+
+		if not os.path.exists(os.path.abspath(aug_dir)):
+			os.mkdir(augdir)
+
+		cam = ['cam_a','cam_b']
+		
+		for name in cam:
+			if not os.path.exists(os.path.join(aug_dir,name)):
+				os.mkdir(os.path.join(aug_dir,name))
+
+			aug_dirname= os.path.join(aug_dir,name)
+
+			image_dir = os.path.join(data_dir,name)
+			image_list = os.listdir(image_dir)
+
+			for num,image_name in enumerate(image_list):
+				if not os.path.exists(os.path.join(aug_dirname,image_name[:3])):
+					os.mkdir(os.path.join(aug_dirname,image_name[:3]))
+
+				person_dir = os.path.join(aug_dirname,image_name[:3])
+				#pre processing for data augmentation
+				image = cv2.imread(os.path.join(image_dir,image_name))
+				transformed_images = pre_processing.pre_processing(image)
+
+				for c,img in enumerate(transformed_images):
+					img_name = "/{:04d}.png".format(c)
+					cv2.imwrite(person_dir+img_name,img)
+
+				if name=='cam_a':
+					shutil.copytree(person_dir, train_dir+'/{:03d}'.format(num))
+				else:
+					shutil.copytree(person_dir, test_dir+'/{:03d}'.format(num))
+
 	else:
 		print("dataset name is invalid. Error: {}. Valid options are MAGI or ILID".format(dataset))
 
