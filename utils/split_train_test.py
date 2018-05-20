@@ -137,7 +137,6 @@ def _main(args):
 			image_list = os.listdir(image_dir)
 
 			for num,image_name in enumerate(image_list):
-				print "processing"
 				if not os.path.exists(os.path.join(aug_dirname,image_name[:3])):
 					os.mkdir(os.path.join(aug_dirname,image_name[:3]))
 
