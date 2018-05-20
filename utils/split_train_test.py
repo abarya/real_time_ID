@@ -74,6 +74,8 @@ def _main(args):
 						train_count+=1
 				print(train_count,test_count)
 	elif dataset=='ILID':
+		nTest = 0
+		nTrain = 0
 		data_dir = '../i-LIDS-VID/sequences/'
 		cam = ['cam1','cam2']
 		num_classes = 319
@@ -116,6 +118,9 @@ def _main(args):
 						cv2.imwrite(os.path.join(train_img_dir,img_name),img)
 						train_count+=1
 			print(train_count,test_count)
+			nTest+=test_count
+			nTrain+=train_count
+		print("num images",nTrain,nTest)
 	elif dataset=='viper':
 		data_dir = '../VIPeR/'
 		train_dir = os.path.join(data_dir,'train')

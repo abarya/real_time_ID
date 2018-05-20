@@ -29,8 +29,15 @@ parser.add_argument(
 	help='directory where trained model will be saved',
 	default='model')
 
+
+def train_squeeze(model):
+	# Freeze the layers except the last 4 layers
+	for layer in vgg_conv.layers[:-4]:
+	    layer.trainable = False
+
 def get_model():
 	model =  squeezenet.SqueezeNet()
+	model = train_squeeze(model)
 	layer_outputs = [layer.output for layer in model.layers]
 	return Model(input=model.input, output=layer_outputs)
 

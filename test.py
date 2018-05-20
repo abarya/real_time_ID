@@ -71,8 +71,7 @@ def _main(args):
 	print("ranks accuracy",rank_accuracy)
 
 	confusion_matrix.create_matrix(labels,predictions)
-	accuracy = rank_accuracy[0]/float(len(labels))
-	print("Number of images in test set is {}.\nAccuracy of model is {}%.".format(len(labels),accuracy*100))
+	print("Number of images in test set is {}.\nAccuracy of model is {}%.".format(len(labels),rank_accuracy[0]))
 
 if __name__ == '__main__':
     _main(parser.parse_args())
