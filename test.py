@@ -67,10 +67,10 @@ def _main(args):
 		print(dir_list[int(pred)],dir_list[int(labels[i])])
 		predictions.append(pred)
 	
-	print("ranks accuracy",rank_accuracy)
+	print("ranks accuracy",100*rank_accuracy/float(len(labels)))
 
 	confusion_matrix.create_matrix(labels,predictions)
-	accuracy = r1/float(len(labels))
+	accuracy = rank_accuracy[0]/float(len(labels))
 	print("Number of images in test set is {}.\nAccuracy of model is {}%.".format(len(labels),accuracy*100))
 
 if __name__ == '__main__':
