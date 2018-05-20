@@ -67,7 +67,8 @@ def _main(args):
 		print(dir_list[int(pred)],dir_list[int(labels[i])])
 		predictions.append(pred)
 	
-	print("ranks accuracy",100*rank_accuracy/float(len(labels)))
+	rank_accuracy = [100*x/float(len(labels)) for x in rank_accuracy]
+	print("ranks accuracy",rank_accuracy)
 
 	confusion_matrix.create_matrix(labels,predictions)
 	accuracy = rank_accuracy[0]/float(len(labels))
