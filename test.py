@@ -52,31 +52,22 @@ def _main(args):
 	svm = joblib.load(model_path)
 
 	count=0 # number of correct predictions
-	r1=0
-	r2=0
-	r5=0
-	r10=0
+	rank = [1,2,5,10,20,50,100]
+	rank_accuracy = [0,0,0,0,0,0,0]
 	predictions = []
 	for i in range(len(labels)):
 		pred = svm.predict(test_data[i])
 		probs = svm.predict_proba(test_data[i])
 		probs=probs.ravel()
 		probs = [b[0] for b in sorted(enumerate(probs),key=lambda i:i[1],reverse=True)]
-		if labels[i] in probs[:1]:
-			r1+=1
-		if labels[i] in probs[:2]:
-			r2+=1
-		if labels[i] in probs[:5]:
-			r5+=1
-		if labels[i] in probs[:10]:
-			r10+=1
+		for j in range(len(rank)):
+			if rank[j]<=len(probs) and (labels[i] in probs[:rank[j]]):
+				rank_accuracy[j]+=1
+
 		print(dir_list[int(pred)],dir_list[int(labels[i])])
 		predictions.append(pred)
 	
-	print("rank1 - accuracy = {}".format((100*r1)/float(len(labels))))
-	print("rank2 - accuracy = {}".format((100*r2)/float(len(labels))))
-	print("rank5 - accuracy = {}".format((100*r5)/float(len(labels))))
-	print("rank10 - accuracy = {}".format((100*r10)/float(len(labels))))
+	print("ranks accuracy",rank_accuracy)
 
 	confusion_matrix.create_matrix(labels,predictions)
 	accuracy = r1/float(len(labels))
