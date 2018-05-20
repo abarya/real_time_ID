@@ -120,39 +120,62 @@ def _main(args):
 		data_dir = '../VIPeR/'
 		train_dir = os.path.join(data_dir,'train')
 		test_dir = os.path.join(data_dir,'test')
+
+		if not os.path.exists(train_dir):
+			os.mkdir(train_dir)
+		if not os.path.exists(test_dir):
+			os.mkdir(test_dir)
 		aug_dir = data_dir + 'augmented_data'
 
 		if not os.path.exists(os.path.abspath(aug_dir)):
 			os.mkdir(aug_dir)
 
 		cam = ['cam_a','cam_b']
-		
-		for name in cam:
-			if not os.path.exists(os.path.join(aug_dir,name)):
-				os.mkdir(os.path.join(aug_dir,name))
+		person_lista = sorted(global_var.viper_details_cam_a)
+		person_listb = sorted(global_var.viper_details_cam_b)
 
-			aug_dirname= os.path.join(aug_dir,name)
+		dictionary = {y[:3]:"{:03d}".format(i) for i,y in enumerate(person_lista)}
 
-			image_dir = os.path.join(data_dir,name)
-			image_list = os.listdir(image_dir)
+		for i in range(len(global_var.viper_details_cam_a)):
 
-			for num,image_name in enumerate(image_list):
-				if not os.path.exists(os.path.join(aug_dirname,image_name[:3])):
-					os.mkdir(os.path.join(aug_dirname,image_name[:3]))
+			test_count=0
+			train_count=0
 
-				person_dir = os.path.join(aug_dirname,image_name[:3])
-				#pre processing for data augmentation
-				image = cv2.imread(os.path.join(image_dir,image_name))
-				transformed_images = pre_processing.pre_processing(image)
-
-				for c,img in enumerate(transformed_images):
-					img_name = "/{:04d}.png".format(c)
-					cv2.imwrite(person_dir+img_name,img)
-
-				if name=='cam_a':
-					shutil.copytree(person_dir, train_dir+'/{:03d}'.format(num))
+			for dir_name in cam:
+				data_path = data_dir+dir_name
+				if dir_name=="cam_a":
+					person_dir = dictionary[person_lista[i][:3]]
+					img_path = data_path+'/'+person_lista[i]
 				else:
-					shutil.copytree(person_dir, test_dir+'/{:03d}'.format(num))
+					person_dir = dictionary[person_listb[i][:3]]
+					img_path = data_path+'/'+person_listb[i]
+				
+				if not os.path.exists(os.path.join(train_dir,person_dir)):
+					os.mkdir(os.path.join(train_dir,person_dir))
+				if not os.path.exists(os.path.join(test_dir,person_dir)):
+					os.mkdir(os.path.join(test_dir,person_dir))
+
+				train_img_dir = os.path.join(train_dir,person_dir)
+				test_img_dir = os.path.join(test_dir,person_dir)
+				
+				image = cv2.imread(img_path)
+				image_list = pre_processing.pre_processing(image)
+
+				random_perm = [x for x in range(len(image_list))]
+				random.seed()  # Fixed seed for consistent colors across runs.
+				random.shuffle(random_perm)  # Shuffle colors to decorrelate adjacent classes.
+				for j in range(len(random_perm)):
+					img = image_list[j]
+					if j<=int(split_ratio*len(random_perm)):
+						# print "hello", j, int(split_ratio*len(random_perm)), len(random_perm)
+						img_name = "{:04d}.png".format(test_count)
+						cv2.imwrite(os.path.join(test_img_dir,img_name),img)
+						test_count+=1
+					else:
+						img_name = "{:04d}.png".format(train_count)
+						cv2.imwrite(os.path.join(train_img_dir,img_name),img)
+						train_count+=1
+			print(train_count,test_count)
 
 	else:
 		print("dataset name is invalid. Error: {}. Valid options are MAGI or ILID".format(dataset))
