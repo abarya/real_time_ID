@@ -77,10 +77,11 @@ def transform_image(img,ang_range,shear_range,trans_range,brightness=0):
 def pre_processing(image):
     transformed_img_list = []
     img_list  = crop_image(image)
-    for j in range(len(img_list)):
-        for i in range(4):
-            transformed_img_list.append(transform_image(img_list[j],0,10,5,brightness=1))
-    return transformed_img_list
+    img_list.append(image)
+    # for j in range(len(img_list)):
+    #     for i in range(4):
+    #         transformed_img_list.append(transform_image(img_list[j],0,10,5,brightness=1))
+    return img_list
 
 # image = mpimg.imread('/home/arya/Documents/real_time_ID/VIPeR/cam_a/000_45.bmp')
 # plt.imshow(image);
