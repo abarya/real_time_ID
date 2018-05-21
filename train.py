@@ -115,7 +115,7 @@ def _main(args):
 	
 	count=0
 	for i in range(len(labels)):
-		pred = svm.predict(test_data[i])
+		pred = svm_model.predict(test_data[i])
 		
 		if labels[i]==pred:
 			count+=1
