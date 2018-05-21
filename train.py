@@ -110,7 +110,7 @@ def _main(args):
  #    decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
  #    max_iter=-1, probability=True, random_state=None, shrinking=True,
  #    tol=0.001, verbose=False)
-	half = int(len(labels)/2)
+	half = int(len(train_labels)/2)
 	svm_model.partial_fit(train_data[:half][:],train_labels[:half],classes=np.unique(train_labels))
 	print("accuracy is",svm_model.score(test_data,test_labels))
 	svm_model.partial_fit(train_data[half:][:],train_labels[half:])
