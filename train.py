@@ -120,9 +120,16 @@ def _main(args):
 		if labels[i]==pred:
 			count+=1
 
-	print("accuracy is",100*count/float(len(labels)))
-	svm_model.fit(train_data[half:][:],train_labels[half:])
-	print("accuracy is",svm_model.score(test_data,test_labels))
+	print("accuracy on test set is",100*count/float(len(labels)))
+	count=0
+	for i in range(len(train_labels)):
+		pred = svm_model.predict(train_data[i].reshape(1,-1))
+		
+		if train_labels[i]==pred:
+			count+=1
+	print("accuracy on training set is",100*count/float(len(train_labels)))
+	
+	
 	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 
 
 if __name__ == '__main__':
