@@ -5,6 +5,7 @@ from keras.applications.imagenet_utils import preprocess_input, decode_predictio
 from keras.models import Model
 from sklearn.externals import joblib
 from sklearn import svm
+from sklearn.decomposition import PCA
 import argparse
 import random
 import squeezenet
@@ -78,14 +79,46 @@ def _main(args):
 		train_labels.append(labels[random_perm[i]])
 	train_data = np.array(train_data)
 	train_labels = np.array(train_labels)
+
+	test_data = []
+	labels = []
+	dir_list = os.listdir(test_dir)
+
+	for i,name in enumerate(dir_list):
+		path = os.path.join(test_dir,name)
+		image_list = os.listdir(path)
+		for img_name in image_list:
+			img = image.load_img(os.path.join(path,img_name), target_size=(227, 227))
+			x = image.img_to_array(img)
+			x = np.expand_dims(x, axis=0)
+			x = preprocess_input(x)
+
+			features = conv_model.predict(x)
+			test_data.append(features[-2].ravel().reshape(1,-1))
+			labels.append(i)
+	test_labels = np.array(labels)
+	test_data = np.array(test_data)
+
+	#dimensionality reduction
+	# pca = PCA(n_components=100)
+	# pca.fit(train_data)
+	# train_data = pca.transform(train_data)
+	# filename = 'pca_model.sav'
+	# pickle.dump(pca, open(filename, 'wb')) #save pca model
+	# print("variance in pca{}".format(pca.explained_variance_ratio_))  
+
 	print("Number of training samples is {}".format(len(training_data)))
 	print(train_labels)
-	svm_model = svm.SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
-    decision_function_shape='ovr', degree=3, gamma='auto', kernel='linear',
-    max_iter=-1, probability=True, random_state=None, shrinking=True,
-    tol=0.001, verbose=False)
-	svm_model.fit(training_data,labels)
-
+	from sklearn.linear_model import SGDClassifier
+	svm_model = SGDClassifier(loss="hinge", penalty="l2")
+	# svm_model = svm.SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+ #    decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
+ #    max_iter=-1, probability=True, random_state=None, shrinking=True,
+ #    tol=0.001, verbose=False)
+	svm_model.partial_fit(training_data[:len(labels)/2,:],labels[:len(labels)/2])
+	print("accuracy is",svm_model.score(test_data,test_labels))
+	svm_model.partial_fit(training_data[:len(labels)/2,:],labels[:len(labels)/2])
+	print("accuracy is",svm_model.score(test_data,test_labels))
 	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 
 
 if __name__ == '__main__':

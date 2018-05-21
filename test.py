@@ -49,6 +49,10 @@ def _main(args):
 	labels = np.array(labels)
 	test_data = np.array(test_data)
 
+	#dimensionality reduction
+	# filename = 'pca_model.sav'
+	# pca = pickle.load(open(filename, 'rb'))
+	# test_data = pca.transform(test_data)
 	svm = joblib.load(model_path)
 
 	count=0 # number of correct predictions
