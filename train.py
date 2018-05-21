@@ -89,7 +89,7 @@ def _main(args):
 			x = preprocess_input(x)
 
 			features = conv_model.predict(x)
-			test_data.append(features[-2].ravel().reshape(1,-1))
+			test_data.append(features[-2].ravel())
 			labels.append(i)
 	test_labels = np.array(labels)
 	test_data = np.array(test_data)
