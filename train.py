@@ -16,6 +16,10 @@ parser = argparse.ArgumentParser(
     description='train model on dataset')
 
 parser.add_argument(
+    'dataset',
+    help='dataset being used',)
+
+parser.add_argument(
     '--train_dir',
     help='path to directory containing training images',
     default='data/train')
@@ -40,7 +44,17 @@ def _main(args):
 	train_dir = os.path.expanduser(args.train_dir)
 	test_dir = os.path.expanduser(args.test_dir)
 	model_dir = os.path.expanduser(args.model_dir) #classifier
+	dataset = os.path.expanduser(args.dataset)
 	
+	if not os.path.exists('features'):
+		os.mkdir('features')
+
+	trainfeatures_file_name = 'features/'+dataset+'_train_features.out' 
+	trainlabels_file_name = 'features/'dataset+'_train_labels.out'
+
+	testfeatures_file_name = 'features/'dataset+'_test_features.out' 
+	testlabels_file_name = 'features/'dataset+'_test_labels.out'
+
 	conv_model = get_model() #squeezenet for feature extraction
 
 	if not os.path.exists(model_dir):
@@ -94,6 +108,10 @@ def _main(args):
 	test_labels = np.array(labels)
 	test_data = np.array(test_data)
 
+	np.savetxt(trainfeatures_file_name, train_data, delimiter=',')
+	np.savetxt(trainlabels_file_name, train_labels, delimiter=',')
+	np.savetxt(testfeatures_file_name, test_data, delimiter=',')
+	np.savetxt(testlabels_file_name, test_labels, delimiter=',')
 	#dimensionality reduction
 	# pca = PCA(n_components=100)
 	# pca.fit(train_data)
@@ -114,7 +132,7 @@ def _main(args):
 	svm_model.fit(train_data,train_labels)#,classes=np.unique(train_labels))
 	
 	count=0
-	for i in range(len(labels)):
+	for i in range(len(test_labels)):
 		pred = svm_model.predict(test_data[i].reshape(1,-1))
 		
 		if labels[i]==pred:
