@@ -113,7 +113,7 @@ def _main(args):
 	half = int(len(train_labels)/2)
 	svm_model.fit(train_data[:half][:],train_labels[:half])#,classes=np.unique(train_labels))
 	print("accuracy is",svm_model.score(test_data,test_labels))
-	svm_model.partial(train_data[half:][:],train_labels[half:])
+	svm_model.fit(train_data[half:][:],train_labels[half:])
 	print("accuracy is",svm_model.score(test_data,test_labels))
 	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 
 
