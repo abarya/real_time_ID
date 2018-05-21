@@ -110,9 +110,9 @@ def _main(args):
  #    max_iter=-1, probability=True, random_state=None, shrinking=True,
  #    tol=0.001, verbose=False)
 	
-	svm_model.partial_fit(train_data[:len(labels)/2][:],labels[:len(labels)/2])
+	svm_model.partial_fit(train_data[:5][:],labels[:5])
 	print("accuracy is",svm_model.score(test_data,test_labels))
-	svm_model.partial_fit(train_data[len(labels)/2:][:],labels[len(labels)/2:])
+	svm_model.partial_fit(train_data[5:][:],labels[5:])
 	print("accuracy is",svm_model.score(test_data,test_labels))
 	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 
 
