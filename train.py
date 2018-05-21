@@ -112,7 +112,15 @@ def _main(args):
     tol=0.001, verbose=False)
 	half = int(len(train_labels)/2)
 	svm_model.fit(train_data,train_labels)#,classes=np.unique(train_labels))
-	print("accuracy is",svm_model.score(test_data,test_labels))
+	
+	count=0
+	for i in range(len(labels)):
+		pred = svm.predict(test_data[i])
+		
+		if labels[i]==pred:
+			count+=1
+
+	print("accuracy is",100*count/float(len(labels)))
 	svm_model.fit(train_data[half:][:],train_labels[half:])
 	print("accuracy is",svm_model.score(test_data,test_labels))
 	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 
