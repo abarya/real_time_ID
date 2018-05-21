@@ -105,11 +105,11 @@ def _main(args):
 	print("Number of training samples is {}".format(len(training_data)))
 	print(train_labels)
 	from sklearn.linear_model import SGDClassifier
-	svm_model = SGDClassifier(loss="hinge", penalty="l2",max_iter=1000)
-	# svm_model = svm.SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
- #    decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
- #    max_iter=-1, probability=True, random_state=None, shrinking=True,
- #    tol=0.001, verbose=False)
+	# svm_model = SGDClassifier(loss="hinge", penalty="l2",max_iter=1000)
+	svm_model = svm.SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
+    max_iter=-1, probability=True, random_state=None, shrinking=True,
+    tol=0.001, verbose=False)
 	half = int(len(train_labels)/2)
 	svm_model.partial_fit(train_data[:half][:],train_labels[:half],classes=np.unique(train_labels))
 	print("accuracy is",svm_model.score(test_data,test_labels))
