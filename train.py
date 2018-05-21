@@ -40,6 +40,7 @@ def _main(args):
 	train_dir = os.path.expanduser(args.train_dir)
 	test_dir = os.path.expanduser(args.test_dir)
 	model_dir = os.path.expanduser(args.model_dir) #classifier
+	
 	conv_model = get_model() #squeezenet for feature extraction
 
 	if not os.path.exists(model_dir):
@@ -109,10 +110,10 @@ def _main(args):
  #    decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
  #    max_iter=-1, probability=True, random_state=None, shrinking=True,
  #    tol=0.001, verbose=False)
-	
-	svm_model.partial_fit(train_data[:5][:],labels[:5])
+	half = int(len(labels)/2)
+	svm_model.partial_fit(train_data[:half][:],labels[:half],classes=np.unique(labels))
 	print("accuracy is",svm_model.score(test_data,test_labels))
-	svm_model.partial_fit(train_data[5:][:],labels[5:])
+	svm_model.partial_fit(train_data[half:][:],labels[half:])
 	print("accuracy is",svm_model.score(test_data,test_labels))
 	joblib.dump(svm_model, os.path.join(model_dir,'svm.pkl')) 
 
