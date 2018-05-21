@@ -50,10 +50,10 @@ def _main(args):
 		os.mkdir('features')
 
 	trainfeatures_file_name = 'features/'+dataset+'_train_features.out' 
-	trainlabels_file_name = 'features/'dataset+'_train_labels.out'
+	trainlabels_file_name = 'features/'+dataset+'_train_labels.out'
 
-	testfeatures_file_name = 'features/'dataset+'_test_features.out' 
-	testlabels_file_name = 'features/'dataset+'_test_labels.out'
+	testfeatures_file_name = 'features/'+dataset+'_test_features.out' 
+	testlabels_file_name = 'features/'+dataset+'_test_labels.out'
 
 	conv_model = get_model() #squeezenet for feature extraction
 
@@ -135,7 +135,7 @@ def _main(args):
 	for i in range(len(test_labels)):
 		pred = svm_model.predict(test_data[i].reshape(1,-1))
 		
-		if labels[i]==pred:
+		if test_labels[i]==pred:
 			count+=1
 
 	print("accuracy on test set is",100*count/float(len(labels)))
