@@ -19,9 +19,9 @@ parser.add_argument(
     'dataset',
     help='dataset being used')
 
-parser.add_argument(
-    'extract_features',
-    help='IS it needed to extract features?, boolean')
+# parser.add_argument(
+#     'extract_features',
+#     help='IS it needed to extract features?, boolean')
 
 parser.add_argument(
     '--train_dir',
@@ -63,62 +63,59 @@ def _main(args):
 	test_data = []
 	test_labels = []
 
-	if extract_features==1:
-		if not os.path.exists('features'):
-			os.mkdir('features')
+	if not os.path.exists('features'):
+		os.mkdir('features')
 
-		conv_model = get_model() #squeezenet for feature extraction
+	conv_model = get_model() #squeezenet for feature extraction
 
-		if not os.path.exists(model_dir):
-			os.mkdir(model_dir)
+	if not os.path.exists(model_dir):
+		os.mkdir(model_dir)
 
-		dir_list = os.listdir(train_dir)
-		training_data = []
-		labels = []	
+	dir_list = os.listdir(train_dir)
+	training_data = []
+	labels = []	
 
-		for i,name in enumerate(dir_list):
-			print("{:.2f} completed".format(i/float(len(dir_list))))
-			path = os.path.join(train_dir,name)
-			image_list = os.listdir(path)
-			for img_name in image_list:
-				img = image.load_img(os.path.join(path,img_name), target_size=(227, 227))
-				x = image.img_to_array(img)
-				x = np.expand_dims(x, axis=0)
-				x = preprocess_input(x)
+	for i,name in enumerate(dir_list):
+		print("{:.2f} completed".format(i/float(len(dir_list))))
+		path = os.path.join(train_dir,name)
+		image_list = os.listdir(path)
+		for img_name in image_list:
+			img = image.load_img(os.path.join(path,img_name), target_size=(227, 227))
+			x = image.img_to_array(img)
+			x = np.expand_dims(x, axis=0)
+			x = preprocess_input(x)
 
-				features = conv_model.predict(x)
-				training_data.append(features[-2].ravel())
-				labels.append(i)
+			features = conv_model.predict(x)
+			training_data.append(features[-2].ravel())
+			labels.append(i)
 
-		random_perm = [x for x in range(len(labels))]
-		random.shuffle(random_perm)
-		
-		
-		for i in range(len(labels)):
-			train_data.append(training_data[random_perm[i]])
-			train_labels.append(labels[random_perm[i]])
+	random_perm = [x for x in range(len(labels))]
+	random.shuffle(random_perm)
+	
+	
+	for i in range(len(labels)):
+		train_data.append(training_data[random_perm[i]])
+		train_labels.append(labels[random_perm[i]])
 
-		train_data = np.array(train_data)
-		train_labels = np.array(train_labels)
+	train_data = np.array(train_data)
+	train_labels = np.array(train_labels)
 
-		dir_list = os.listdir(test_dir)
+	dir_list = os.listdir(test_dir)
 
-		for i,name in enumerate(dir_list):
-			path = os.path.join(test_dir,name)
-			image_list = os.listdir(path)
-			for img_name in image_list:
-				img = image.load_img(os.path.join(path,img_name), target_size=(227, 227))
-				x = image.img_to_array(img)
-				x = np.expand_dims(x, axis=0)
-				x = preprocess_input(x)
+	for i,name in enumerate(dir_list):
+		path = os.path.join(test_dir,name)
+		image_list = os.listdir(path)
+		for img_name in image_list:
+			img = image.load_img(os.path.join(path,img_name), target_size=(227, 227))
+			x = image.img_to_array(img)
+			x = np.expand_dims(x, axis=0)
+			x = preprocess_input(x)
 
-				features = conv_model.predict(x)
-				test_data.append(features[-2].ravel().reshape(1,-1))
-				test_labels.append(i)
-		test_labels = np.array(test_labels)
-		test_data = np.array(test_data)
-	else:
-		print("features not extracted")
+			features = conv_model.predict(x)
+			test_data.append(features[-2].ravel().reshape(1,-1))
+			test_labels.append(i)
+	test_labels = np.array(test_labels)
+	test_data = np.array(test_data)
 		
 	# np.savetxt(trainfeatures_file_name, train_data, delimiter=',')
 	# np.savetxt(trainlabels_file_name, train_labels, delimiter=',')
