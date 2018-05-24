@@ -23,7 +23,7 @@ parser.add_argument(
 
 
 def _main(args):
-    predictions=0
+    predictions=1
     if predictions==0:
         video_path = os.path.expanduser(args.video_path)
         video_file = os.path.expanduser(args.video_file)
@@ -51,6 +51,7 @@ def _main(args):
             while(i<len(lines) and count==lines[i][0]):
                 cv2.rectangle(frame,(lines[i][1],lines[i][2]),(lines[i][3],lines[i][4]),(0,255,0),3)
                 img = frame[lines[i][2]:lines[i][4],lines[i][1]:lines[i][3],:]
+                cv2.imwrite('person.jpg',img)
                 i+=1
             frame = cv2.resize(frame,(frame.shape[1]/2,frame.shape[0]/2))  
             cv2.imshow("f",frame)
@@ -61,7 +62,6 @@ def _main(args):
             	break
             count+=1
     else:
-        print "hell"
         video_path = os.path.expanduser(args.video_path)
         video_file = os.path.expanduser(args.video_file)
         detections_file_path = os.path.expanduser(args.detections_file_path)
@@ -86,13 +86,15 @@ def _main(args):
                 break
             while(i<len(lines) and count==lines[i][0]):
                 cv2.rectangle(frame,(lines[i][1],lines[i][2]),(lines[i][3],lines[i][4]),(0,255,0),1)
-                cv2.putText(frame,global_var.CLASSES[lines[i][5]],(lines[i][1],lines[i][2]),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2,cv2.LINE_AA)
+                cv2.putText(frame,"Predicted Person: "+global_var.CLASSES[lines[i][5]],(lines[i][1],lines[i][2]),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),1,cv2.LINE_AA)
                 img = frame[lines[i][2]:lines[i][4],lines[i][1]:lines[i][3],:]
                 if global_var.CLASSES[lines[i][5]]==video_file:
                     correct+=1
                 else:
                     print global_var.CLASSES[lines[i][5]]
-                i+=1  
+                # cv2.imwrite(str(i),img)
+                i+=1
+            cv2.imwrite('sample_image.png',frame)
             frame = cv2.resize(frame,(frame.shape[1]/2,frame.shape[0]/2))  
             cv2.imshow("f",frame)
             img_name = "{:05d}.jpg".format(count)
