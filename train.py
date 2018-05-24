@@ -125,7 +125,7 @@ def _main(args):
 	# np.savetxt(testfeatures_file_name, test_data, delimiter=',')
 	# np.savetxt(testlabels_file_name, test_labels, delimiter=',')
 
-	print("Number of training samples is {}".format(len(training_data)))
+	print("Number of training samples is {}".format(len(train_data)))
 	print(train_labels)
 	
 	
