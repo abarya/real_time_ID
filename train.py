@@ -49,7 +49,7 @@ def _main(args):
 	test_dir = os.path.expanduser(args.test_dir)
 	model_dir = os.path.expanduser(args.model_dir) #classifier
 	dataset = os.path.expanduser(args.dataset)
-	extract_features = args.extract_features
+	# extract_features = args.extract_features
 	
 	trainfeatures_file_name = 'features/'+dataset+'_train_features.out' 
 	trainlabels_file_name = 'features/'+dataset+'_train_labels.out'
