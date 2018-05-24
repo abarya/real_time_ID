@@ -63,7 +63,7 @@ def _main(args):
 	test_data = []
 	test_labels = []
 
-	if extract_features==True:
+	if extract_features==1:
 		if not os.path.exists('features'):
 			os.mkdir('features')
 
