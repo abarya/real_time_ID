@@ -72,7 +72,7 @@ def _main(args):
 		if ret==0:
 			print("video processed completely in {}s\n".format(time.time()-start))
 			break
-
+		print("frame read")
 		while(i<len(lines) and count==lines[i][0]):
 			cv2.rectangle(frame,(lines[i][1],lines[i][2]),(lines[i][3],lines[i][4]),(0,255,0),3)
 			img = frame[lines[i][2]:lines[i][4],lines[i][1]:lines[i][3],:]
@@ -83,6 +83,7 @@ def _main(args):
 			x = preprocess_input(x)
 			features = conv_model.predict(x)
 			pred = svm.predict(features[-2].ravel().reshape(1,-1))
+			print("prediction",pred)
 			lines[i].append(pred)
 			i+=1  
 		count+=1
