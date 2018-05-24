@@ -118,11 +118,12 @@ def _main(args):
 		test_labels = np.array(test_labels)
 		test_data = np.array(test_data)
 	else:
+		print("features not extracted")
 		
-	np.savetxt(trainfeatures_file_name, train_data, delimiter=',')
-	np.savetxt(trainlabels_file_name, train_labels, delimiter=',')
-	np.savetxt(testfeatures_file_name, test_data, delimiter=',')
-	np.savetxt(testlabels_file_name, test_labels, delimiter=',')
+	# np.savetxt(trainfeatures_file_name, train_data, delimiter=',')
+	# np.savetxt(trainlabels_file_name, train_labels, delimiter=',')
+	# np.savetxt(testfeatures_file_name, test_data, delimiter=',')
+	# np.savetxt(testlabels_file_name, test_labels, delimiter=',')
 
 	print("Number of training samples is {}".format(len(training_data)))
 	print(train_labels)
