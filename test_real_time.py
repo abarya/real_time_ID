@@ -91,6 +91,7 @@ def _main(args):
 		os.mkdir(result_dir)
 
 	bboxesPredictionArray = np.array(lines)
+	print(bboxesPredictionArray)
 	np.savetxt(result_dir+'/'+video_name+'.out', bboxesPredictionArray, delimiter=',')
 
 if __name__ == '__main__':
